@@ -1,0 +1,208 @@
+@font-face {
+  font-family: 'ChineseRocks';
+  src: url('../fonts/chinese_rocks_rg-webfont.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+:root {
+  --main-background: #2a1326;
+  --main-shadow: #a71d22;
+  --panel-background: #fdfad5;
+  --panel-border: #802c54;
+  --card-background: #f5d89d;
+  --card-border: #a51e23;
+  --card-text: #eb0006;
+  --fade-delay: 0.125s;
+  --fade-time: 0.25s;
+}
+
+body {
+  background-image: url(../images/header.png),url(../images/pattern.png);
+  background-repeat: repeat-x,repeat;
+  background-position: 0 0,0 14px;
+  background-size: auto,auto;
+  margin: 0px;
+  height: 100vh;
+  width: 100vw;
+  font-family: ChineseRocks;
+  font-size: 24px;
+}
+
+#container {
+  padding: 20px 20px 0px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+#data {
+  display: flex;
+}
+
+input, button {
+  font-family: inherit;
+  font-size: inherit;
+  border-radius: 11px;
+}
+
+input {
+  flex-grow: 1;
+  margin-right: 10px;
+  border: 6px solid #fbae24;
+  color: #555;
+  box-sizing: border-box;
+  padding: 11px;
+  min-width: 0;
+}
+
+#results {
+  display: flex;
+  flex-flow: column wrap;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.shirt {
+  border: 10px solid #9c142e;
+  border-radius: 6px;
+  background-color: #f8ff8f;
+  padding: 10px;
+  height: 360px; /*260*/
+  transition: all 0.5s linear;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 300px 1fr; /*200px 1fr*/
+  grid-gap: 10px;
+  align-items: stretch;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-bottom: 20px;
+}
+
+img {
+  grid-column: 1 / span 2;
+  grid-row: 1;
+  display: block;
+  box-sizing: border-box;
+  border-radius: 11px;
+}
+
+.download, #submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ca2227;
+  border: 6px solid #fbae24;
+  border-radius: 11px;
+  color: white;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+#data {
+  background: #f8ff8f;
+  border: 10px solid #9c142e;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+#submit {
+  white-space: nowrap;
+}
+
+.submit-icon {
+  display: none;
+  padding: 0 0.5rem;
+}
+
+.info {
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(1px);
+  z-index: 1;
+  grid-column: 1 / span 2;
+  grid-row: 1;
+  border-radius: 11px;
+  color: white;
+  box-sizing: border-box;
+  padding: 10px;
+  text-shadow: 2px 2px 1px rgba(0,0,0,0.5);
+  overflow: hidden;
+  max-width: 300px;
+  max-height: 300px;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  cursor: pointer;
+  transition-delay: var(--fade-delay);
+  transition-timing-function: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+}
+
+.info-inner {
+  display: flex;
+  flex: 1 0;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: flex-end;
+  transition-timing-function: ease;
+}
+
+.info > .info-inner > div {
+  margin-bottom: 0.125rem;
+  color: #bbb;
+}
+
+.info > .info-inner > .slogan {
+  font-size: 1.5em;
+  flex-grow: 1;
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+
+.designer {
+  margin-top: 0.125rem;
+  color: #bbb;
+  font-size: 0.675em;
+}
+
+.info > .info-inner > div:not(.slogan) {
+  font-size: 0.9em;
+}
+
+.info span {
+  color: #fff;
+}
+
+.info, .info-inner {
+  opacity: 0;
+  transition: opacity var(--fade-time);
+}
+
+.shirt .info-inner {
+  transition-delay: 0s;
+}
+
+.shirt:hover .info, .shirt:focus-within .info {
+  pointer-events: all;
+  opacity: 1;
+  transition-delay: 0s;
+}
+
+.shirt:hover .info-inner, .shirt:focus-within .info-inner {
+  opacity: 1;
+  transition-delay: var(--fade-delay);
+}
+
+@media only screen and (max-width: 500px) {
+  .submit-text {
+    display: none;
+  }
+  .submit-icon {
+    display: block;
+  }
+}
