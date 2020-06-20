@@ -48,6 +48,8 @@ body {
   margin-bottom: 20px;
   width: 100%;
   box-sizing: border-box;
+  min-height: max-content;
+  flex: 0 0;
 }
 
 input, button {
