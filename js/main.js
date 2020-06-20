@@ -132,7 +132,7 @@ class Shirt {
       
       const img = new Image(512, 512);
       img.onload = async () => {
-        ctx.drawImage(img, 0, 0);
+        ctx.drawImage(img, 0, 0, 512, 512);
         const blob = await new Promise((res, rej) => canvas.toBlob(res));
         this._raster = URL.createObjectURL(blob);
         resolve(this._raster);
