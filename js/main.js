@@ -152,6 +152,7 @@ class Shirt {
     container.classList.add("shirt");
     
     let img = new Image(300, 300);
+    img.style.background = this._data.drawing.background;
     // img.classList.add("loading");
     
     let infoInner = document.createElement("div");
@@ -184,17 +185,23 @@ class Shirt {
     
     let filename = sloganParsed.replace(/[^A-z0-9\s\_]/g, "").replace(/[\s\-\_]+/g,"_").toLowerCase();
     
+    let saveText = document.createElement("span");
+    saveText.classList.add("save-text");
+    saveText.textContent = "Save\u00A0";
+    
     let vectorButton = document.createElement("a");
     vectorButton.classList.add("download");
     vectorButton.setAttribute("target", "_blank");
     vectorButton.download = `${filename}.svg`;
-    vectorButton.textContent = "Save SVG";
+    vectorButton.textContent = "SVG";
+    vectorButton.prepend(saveText);
     
     let rasterButton = document.createElement("a");
     rasterButton.classList.add("download");
     rasterButton.target = "_blank";
     rasterButton.download = `${filename}.png`;
-    rasterButton.textContent = "Save PNG";
+    rasterButton.textContent = "PNG";
+    rasterButton.prepend(saveText.cloneNode(true));
     
     this._elem = container;
     this._DOMRef.img = img;

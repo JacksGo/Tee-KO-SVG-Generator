@@ -50,6 +50,7 @@ body {
   box-sizing: border-box;
   min-height: max-content;
   flex: 0 0;
+  overflow: hidden;
 }
 
 input, button {
@@ -99,6 +100,9 @@ img {
   display: block;
   box-sizing: border-box;
   border-radius: 11px;
+  object-fit: cover;
+  max-width: 300px;
+  width: 100%;
 }
 
 .download, #submit {
@@ -205,11 +209,23 @@ img {
   transition-delay: var(--fade-delay);
 }
 
+.submit-icon::before {
+  content: url('../images/arrow.svg');
+  display: block;
+  width: 18px;
+}
+
 @media only screen and (max-width: 500px) {
   .submit-text {
     display: none;
   }
   .submit-icon {
     display: block;
+  }
+}
+
+@media only screen and (max-width: 300px) {
+  .save-text {
+    display: none;
   }
 }
