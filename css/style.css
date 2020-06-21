@@ -45,7 +45,8 @@ body {
   padding: 15px;
   width: 100%;
   box-sizing: border-box;
-  min-height: max-content;
+  height: fit-content;
+  max-height: fit-content;
   flex: 0 0;
   overflow: hidden;
   border-bottom: 6px solid var(--panel-border);
