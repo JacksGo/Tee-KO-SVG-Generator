@@ -153,7 +153,6 @@ class Shirt {
     
     let img = new Image(300, 300);
     img.style.background = this._data.drawing.background;
-    // img.classList.add("loading");
     
     let infoInner = document.createElement("div");
     infoInner.classList.add("info-inner");
@@ -257,7 +256,7 @@ async function loadGameData(rawURL = "") {
   try {
     dataURL = new URL(rawURL);
   } catch (error) {
-    return { "error": "Malformed URL" };
+    return { "error": "The input is not a URL" };
   }
   
   // If the URL isn't a subdomain of jackbox.tv, return an error.
@@ -266,14 +265,14 @@ async function loadGameData(rawURL = "") {
     dataURL.protocol = "https:";
     dataURL.hostname = "fishery.jackboxgames.com";
   } else {
-    return { "error": "Incorrect domain" };
+    return { "error": "The URL is not a Tee KO game artifact" };
   }
   
   // dataURL is well-formed and converted.
   // Client can proceed with synchronous fetch of JSON data.
   
   // Return an empty object if the request wasn't successful.
-  let data = await fetch(dataURL, { referrer: rawURL, cache: "force-cache" }).then(res => res.ok ? res.json() : { "error": "Bad request" });
+  let data = await fetch(dataURL, { referrer: rawURL, cache: "force-cache" }).then(res => res.ok ? res.json() : { "error": "Jackbox didn't respond. Please try again later" });
   
   // Jackbox Games orders things weirdly: [the winner, ...the runners up in appearance order, ...all others].
   // Create a custom sort function to bin the shirts and then return a flattened set.
@@ -285,15 +284,27 @@ async function loadGameData(rawURL = "") {
   return sorted.flat().map(shirt => new Shirt(shirt));
 }
 
-document.getElementById("submit").addEventListener("click", async function() {
+document.getElementById("submit").addEventListener("click", async function(e) {
+  if (document.getElementById("submit").classList.contains("loading")) {
+    return false;
+  }
+  
   const url = document.getElementById("url").value;
   
-  let oldShirts = shirts;
+  let oldShirts = Array.isArray(shirts) ? shirts : [];
   for (let oldShirt of oldShirts) {
     oldShirt.remove();
   }
   
+  document.getElementById("submit").classList.add("loading");
   shirts = await loadGameData(url);
+  document.getElementById("submit").classList.remove("loading");
+  
+  if (shirts.error) {
+    alert(`Unable to fetch game data.${"\n"}Reason: ${shirts.error}.`);
+    return;
+  }
+  
   for (let shirt of shirts) {
     document.getElementById("results").appendChild(shirt.render());
   }
