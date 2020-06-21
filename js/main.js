@@ -174,14 +174,23 @@ class Shirt {
     slogan.appendChild(designer);
     infoInner.appendChild(slogan);
     
+    let players = document.createElement("div");
+    players.classList.add("players");
+    
     for (let v of [this.metadata.players.author, this.metadata.players.artist]) {
       let cont = document.createElement("div");
       let name = document.createElement("span");
       cont.textContent = v.label;
       name.textContent = " " + v.name;
       cont.appendChild(name);
-      infoInner.appendChild(cont);
+      players.appendChild(cont);
     }
+    
+    let spacer = document.createElement("div");
+    spacer.classList.add("spacer");
+    infoInner.appendChild(spacer);
+    
+    infoInner.appendChild(players);
     
     let filename = sloganParsed.replace(/[^A-z0-9\s\_]/g, "").replace(/[\s\-\_]+/g,"_").toLowerCase();
     
@@ -264,7 +273,9 @@ async function loadGameData(rawURL = "") {
   // Client can proceed with synchronous fetch of JSON data.
   
   // Return an empty object if the request wasn't successful.
-  let data = await fetch(dataURL, { referrer: rawURL, cache: "force-cache" }).then(res => res.ok ? res.json() : { "error": "Bad request" });
+  let data = await fetch(dataURL, { referrer: rawURL, cache: "force-cache", headers: {
+    "Cache-Control": "public, max-age=86400, immutable"
+  }}).then(res => res.ok ? res.json() : { "error": "Bad request" });
   
   // Jackbox Games orders things weirdly: [the winner, ...the runners up in appearance order, ...all others].
   // Create a custom sort function to bin the shirts and then return a flattened set.
