@@ -7,8 +7,33 @@
   "theme_color": "#2a1326",
   "description": "Generate high-resolution vector and raster images of the finished shirts from any Tee KO game.",
   "icons": [{
-    "src": "images/icon.svg",
-    "sizes": "48x48 72x72 96x96 144x144 168x168 192x192 512x512"
+    "src": "images/icon_48.png",
+    "sizes": "48x48",
+    "type": "image/png"
+  }, {
+    "src": "images/icon_72.png",
+    "sizes": "72x72",
+    "type": "image/png"
+  }, {
+    "src": "images/icon_96.png",
+    "sizes": "96x96",
+    "type": "image/png"
+  }, {
+    "src": "images/icon_144.png",
+    "sizes": "144x144",
+    "type": "image/png"
+  }, {
+    "src": "images/icon_168.png",
+    "sizes": "168x168",
+    "type": "image/png"
+  }, {
+    "src": "images/icon_192.png",
+    "sizes": "192x192",
+    "type": "image/png"
+  }, {
+    "src": "images/icon_512.png",
+    "sizes": "512x512",
+    "type": "image/png"
   }],
   "scope": "/"
 }
