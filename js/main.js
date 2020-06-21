@@ -273,9 +273,7 @@ async function loadGameData(rawURL = "") {
   // Client can proceed with synchronous fetch of JSON data.
   
   // Return an empty object if the request wasn't successful.
-  let data = await fetch(dataURL, { referrer: rawURL, cache: "force-cache", headers: {
-    "Cache-Control": "public, max-age=86400, immutable"
-  }}).then(res => res.ok ? res.json() : { "error": "Bad request" });
+  let data = await fetch(dataURL, { referrer: rawURL, cache: "force-cache" }).then(res => res.ok ? res.json() : { "error": "Bad request" });
   
   // Jackbox Games orders things weirdly: [the winner, ...the runners up in appearance order, ...all others].
   // Create a custom sort function to bin the shirts and then return a flattened set.
