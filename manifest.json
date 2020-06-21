@@ -1,0 +1,15 @@
+{
+  "name": "Tee KO Shirt Downloader",
+  "short_name": "Tee KO Downloader",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#2a1326",
+  "theme_color": "#2a1326",
+  "description": "Generate high-resolution vector and raster images of the finished shirts from any Tee KO game.",
+  "icons": [{
+    "src": "images/icon.svg",
+    "sizes": "48x48 72x72 96x96 144x144 168x168 192x192 512x512",
+    "type": "image/png"
+  }],
+  "scope": "/"
+}
