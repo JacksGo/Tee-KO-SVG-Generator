@@ -1,5 +1,5 @@
 {
-  "name": "Tee KO Shirt Downloader",
+  "name": "Tee KO Downloader",
   "short_name": "Tee KO Downloader",
   "start_url": "/",
   "display": "standalone",
@@ -8,8 +8,7 @@
   "description": "Generate high-resolution vector and raster images of the finished shirts from any Tee KO game.",
   "icons": [{
     "src": "images/icon.svg",
-    "sizes": "48x48 72x72 96x96 144x144 168x168 192x192 512x512",
-    "type": "image/png"
+    "sizes": "48x48 72x72 96x96 144x144 168x168 192x192 512x512"
   }],
   "scope": "/"
 }
