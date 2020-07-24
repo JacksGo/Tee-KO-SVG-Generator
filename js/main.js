@@ -1,4 +1,5 @@
-// Consider creating a work queue structure that takes in an array of shirts and generates the image data?
+// Consider creating a work queue structure that takes in an array of shirts 
+// and generates the image data?
 
 // map the result array of shirts into global_shirts.
 // for each item,
@@ -6,18 +7,13 @@
 //   containerElem.appendChild(shirt.render());
 //   return shirt;
 
-// Have the rendered shirt display skeleton elements until .toVector() and .toRaster() have finished.
-// When either finishes, update the rendered element with the new content.
-// You'll have to have skeleton elements for the title, author name, both download buttons, and the rendered image.
-// The title and author name will be trivial, so maybe those aren't necessary.
-// Update: This doesn't take long enough to matter. You could prepopulate the results with skeletons, but you can do that later.
-
-// TODO: Run through and see how it looks to change the double-quotes to single-quotes.
-
-// TODO: Look into interfacing with https://ecast.jackboxgames.com/room/TEST?userId= to get the artifact based on the four-letter code.
-// This would probably only work while the game is ongoing, but it's worth a shot, I think :)
+// TODO: Look into interfacing with
+// https://ecast.jackboxgames.com/room/TEST?userId= to get the artifact based
+// on the four-letter code. This would probably only work while the game is
+// ongoing, but it's worth a shot, I think :)
 
 let shirts = [];
+let players = [];
 
 class Shirt {
   constructor(data) {
@@ -72,8 +68,8 @@ class Shirt {
     const background = document.createElementNS("http://www.w3.org/2000/svg", "rect");
     background.setAttribute("x", "0");
     background.setAttribute("y", "0");
-    background.setAttribute("width", "100%");
-    background.setAttribute("height", "100%");
+    background.setAttribute("width", "300");
+    background.setAttribute("height", "300");
     background.setAttribute("fill", this._data.drawing.background);
     
     // Add the background to the SVG.
@@ -144,9 +140,6 @@ class Shirt {
    
   render() {
     if (this._elem !== null) return this._elem;
-    
-    // This should display a skeleton screen first.
-    // Store each loadable child into this._DOMRef, then update them individually as images become available.
     
     let container = document.createElement("div");
     container.classList.add("shirt");
@@ -226,7 +219,8 @@ class Shirt {
     
     container.appendChild(info);
     
-    // You could chain the last two assignments here, but it's unnecessary and hard to follow.
+    // You could chain the last two assignments here, but it's unnecessary and 
+    // hard to follow.
     this.toRaster().then(async rasterUrl => {
       img.src = rasterUrl;
       rasterButton.href = rasterUrl;
@@ -234,6 +228,14 @@ class Shirt {
     });
     
     return container;
+  }
+  
+  setVisibility(visible) {
+    if (visible) {
+      this._elem.classList.remove("hidden");
+    } else {
+      this._elem.classList.add("hidden");
+    }
   }
   
   remove() {
@@ -274,14 +276,18 @@ async function loadGameData(rawURL = "") {
   // Return an empty object if the request wasn't successful.
   let data = await fetch(dataURL, { referrer: rawURL, cache: "force-cache" }).then(res => res.ok ? res.json() : { "error": "Jackbox didn't respond. Please try again later" });
   
-  // Jackbox Games orders things weirdly: [the winner, ...the runners up in appearance order, ...all others].
+  // Jackbox Games orders things weirdly:
+  // [the winner, ...the runners up in appearance order, ...all others].
   // Create a custom sort function to bin the shirts and then return a flattened set.
   let sorted = [[],[],[]];
-  for (i of data.shirts) {
+  for (let i of data.shirts) {
     sorted[i.gameWinner ? 0 : (i.streakWinner || i.gauntletWinner ? 1 : 2)].push(i);
   }
   
-  return sorted.flat().map(shirt => new Shirt(shirt));
+  return {
+    "shirts": sorted.flat().map(shirt => new Shirt(shirt)),
+    "players": Object.fromEntries(data.players.sort((a,b) => (a.index < b.index ? -1 : (b.index > a.index ? 1 : 0))).map(v => [v.name, true]))
+  };
 }
 
 document.getElementById("submit").addEventListener("click", async function(e) {
@@ -291,21 +297,75 @@ document.getElementById("submit").addEventListener("click", async function(e) {
   
   const url = document.getElementById("url").value;
   
+  document.getElementById("filters-inner").classList.add("hidden");
+  document.getElementsByClassName("filter")
+  
+  // Iterate and remove all old shirts from the page.
   let oldShirts = Array.isArray(shirts) ? shirts : [];
   for (let oldShirt of oldShirts) {
     oldShirt.remove();
   }
   
+  // Lock the submit button and query the API for data.
+  // Assign the data to variables, then unlock the button.
   document.getElementById("submit").classList.add("loading");
-  shirts = await loadGameData(url);
+  let data = await loadGameData(url);
+  shirts = data.shirts;
+  players = data.players || {};
   document.getElementById("submit").classList.remove("loading");
   
+  // Remove all existing player name elements from the filter bar.
+  for (let el of [...document.getElementsByClassName("filter")]) {
+    el.remove();
+  }
+  
+  // Add elements for the players from the new game to the filter bar.
+  for (let player of Object.keys(players)) {
+    let e = document.createElement("div");
+    e.classList.add("filter", "selected");
+    e.textContent = player;
+    e.setAttribute("data-key", player);
+    document.getElementById("filters-inner").appendChild(e);
+  }
+  document.getElementById("filters-inner").classList.remove("hidden");
+  
+  // If the query was faulty, notify the user and cancel rendering.
   if (shirts.error) {
     alert(`Unable to fetch game data.${"\n"}Reason: ${shirts.error}.`);
     return;
   }
   
+  // Render and add the new shirts to the page.
   for (let shirt of shirts) {
     document.getElementById("results").appendChild(shirt.render());
   }
 });
+
+// If the filter bar is clicked, conditionally hide shirts by their designer.
+document.getElementById("filters-inner").addEventListener("click", function(e){
+  
+  // If the mouse is over a specific player, toggle that player.
+  if (e.target.classList.contains("filter")) {
+    let v = players[e.target.dataset.key];
+    players[e.target.dataset.key] = !v;
+  }
+  
+  // For each of the filter elements, pull its "selected" value
+  // from the global object.
+  for (let filter of document.getElementsByClassName("filter")) {
+    if (players[filter.dataset.key] === true) {
+      filter.classList.add("selected");
+    } else {
+      filter.classList.remove("selected");
+    }
+  }
+  
+  // Update each shirt's visibility.
+  updateShirtVisibility();
+});
+
+function updateShirtVisibility() {
+  for (let shirt of shirts) {
+    shirt.setVisibility(players[shirt.metadata.players.designer.name]);
+  }
+}

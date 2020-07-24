@@ -250,28 +250,8 @@ img {
   display: block;
 }
 
-.shirt.loading .info {
+.hidden {
   display: none;
-}
-
-.shirt.loading {
-  border-color: transparent;
-  background: #f4f4f4;
-  user-select: none;
-}
-
-.shirt.loading img {
-  text-indent: -9999px;
-  background-size: 300px 300px, 600px 300px;
-  background: linear-gradient(-70deg, transparent 0% 30%, #e5e5e5 48% 52%, transparent 70% 100%) top left no-repeat, #d7d7d7;
-  animation: shimmer 4s linear infinite forwards;
-}
-
-.shirt.loading a.download {
-  pointer-events: none;
-  color: transparent;
-  border-color: transparent;
-  background: #d7d7d7;
 }
 
 @media only screen and (max-width: 500px) {
@@ -286,18 +266,64 @@ img {
   }
 }
 
+#filters {
+  width: 100%;
+  padding: 20px 20px 10px;
+  margin-top: -20px;
+}
+
+#filters-inner {
+  text-align: center;
+}
+
+.filter {
+    border: 3px solid var(--accent-color);
+    display: inline-block;
+    background: #1c0f1a;
+    color: hsl(300deg 0% 58%);
+    padding: 5px 10px;
+    border-radius: 12px;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    --accent-color: #681c1f;
+    margin-left: 9px;
+    margin-right: 9px;
+    margin-bottom: 10px;
+}
+
+.filter.selected {
+    --accent-color: var(--card-text);
+    color: white;
+    filter: none;
+}
+
+.filter::before, .filter::after {
+    position: absolute;
+    top: 50%;
+    margin-top: -7px;
+    display: block;
+    background: var(--accent-color);
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    content: "";
+    z-index: -1;
+}
+
+.filter::before {
+    left: 0%;
+    margin-left: -7px;
+}
+
+.filter::after {
+    left: 100%;
+    margin-left: -7px;
+}
+
 @media only screen and (max-width: 300px) {
   .save-text {
     display: none;
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position-x: -300px;
-  }
-  25%, 100% {
-    background-position-x: 300px;
   }
 }
 
