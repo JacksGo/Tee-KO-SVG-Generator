@@ -42,11 +42,11 @@ class Shirt {
           "name": this._data.designer.name,
         },
         "author": {
-          "label": "Written by",
+          "label": "Slogan by",
           "name": (this._data.slogan.author || {}).name || "Jackbox",
         },
         "artist": {
-          "label": "Drawn by",
+          "label": "Art by",
           "name": (this._data.drawing.artist || {}).name || "Jackbox",
         }
       },
@@ -144,6 +144,10 @@ class Shirt {
     let container = document.createElement("div");
     container.classList.add("shirt");
     
+    if (this.metadata.stats.badges.winner) {
+      container.classList.add("first");
+    }
+    
     let img = new Image(300, 300);
     img.style.background = this._data.drawing.background;
     
@@ -169,7 +173,7 @@ class Shirt {
     let players = document.createElement("div");
     players.classList.add("players");
     
-    for (let v of [this.metadata.players.author, this.metadata.players.artist]) {
+    for (let v of [this.metadata.players.artist, this.metadata.players.author]) {
       let cont = document.createElement("div");
       let name = document.createElement("span");
       cont.textContent = v.label;
@@ -306,17 +310,23 @@ document.getElementById("submit").addEventListener("click", async function(e) {
     oldShirt.remove();
   }
   
+  // Remove all existing player name elements from the filter bar.
+  for (let el of [...document.getElementsByClassName("filter")]) {
+    el.remove();
+  }
+  
   // Lock the submit button and query the API for data.
   // Assign the data to variables, then unlock the button.
   document.getElementById("submit").classList.add("loading");
   let data = await loadGameData(url);
-  shirts = data.shirts;
+  shirts = data.shirts || {};
   players = data.players || {};
   document.getElementById("submit").classList.remove("loading");
   
-  // Remove all existing player name elements from the filter bar.
-  for (let el of [...document.getElementsByClassName("filter")]) {
-    el.remove();
+  // If the query was faulty, notify the user and cancel rendering.
+  if (data.error) {
+    alert(`Unable to fetch game data.${"\n"}Reason: ${data.error}.`);
+    return;
   }
   
   // Add elements for the players from the new game to the filter bar.
@@ -328,12 +338,6 @@ document.getElementById("submit").addEventListener("click", async function(e) {
     document.getElementById("filters-inner").appendChild(e);
   }
   document.getElementById("filters-inner").classList.remove("hidden");
-  
-  // If the query was faulty, notify the user and cancel rendering.
-  if (shirts.error) {
-    alert(`Unable to fetch game data.${"\n"}Reason: ${shirts.error}.`);
-    return;
-  }
   
   // Render and add the new shirts to the page.
   for (let shirt of shirts) {

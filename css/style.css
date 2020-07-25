@@ -277,48 +277,71 @@ img {
 }
 
 .filter {
-    border: 3px solid var(--accent-color);
-    display: inline-block;
-    background: #1c0f1a;
-    color: hsl(300deg 0% 58%);
-    padding: 5px 10px;
-    border-radius: 12px;
-    position: relative;
-    cursor: pointer;
-    user-select: none;
-    --accent-color: #681c1f;
-    margin-left: 9px;
-    margin-right: 9px;
-    margin-bottom: 10px;
+  border: 3px solid var(--accent-color);
+  display: inline-block;
+  background: #1c0f1a;
+  color: hsl(309deg 3% 50%);
+  padding: 5px 10px;
+  border-radius: 12px;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  margin-left: 9px;
+  margin-right: 9px;
+  margin-bottom: 10px;
+  
+  --accent-color: #681c1f;
 }
 
 .filter.selected {
-    --accent-color: var(--card-text);
-    color: white;
-    filter: none;
+  color: white;
+  filter: none;
+  
+  --accent-color: var(--card-text);
 }
 
 .filter::before, .filter::after {
-    position: absolute;
-    top: 50%;
-    margin-top: -7px;
-    display: block;
-    background: var(--accent-color);
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    content: "";
-    z-index: -1;
+  position: absolute;
+  top: 50%;
+  margin-top: -7px;
+  display: block;
+  background: var(--accent-color);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  content: "";
+  z-index: -1;
 }
 
 .filter::before {
-    left: 0%;
-    margin-left: -7px;
+  left: 0%;
+  margin-left: -7px;
 }
 
 .filter::after {
-    left: 100%;
-    margin-left: -7px;
+  left: 100%;
+  margin-left: -7px;
+}
+
+.shirt.first {
+  position: relative;
+}
+
+.shirt.first::after {
+  width: 66px;
+  height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url(../images/first.svg), url(../images/badge.svg);
+  background-size: 30px, contain;
+  background-position: 48% 46%, center;
+  background-repeat: no-repeat;
+  content: " ";
+  position: absolute;
+  top: -25px;
+  right: -20px;
+  z-index: 1;
 }
 
 @media only screen and (max-width: 300px) {
