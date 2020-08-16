@@ -53,7 +53,7 @@ class Shirt {
     }
   }
   
-  /** 
+  /**
    * Generate or retrieve an object URL for an SVG version of the shirt.
    * @return {string} An object URL that leads to the SVG.
    */
